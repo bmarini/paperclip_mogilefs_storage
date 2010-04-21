@@ -25,13 +25,13 @@ module Paperclip
       end
 
       def to_file style = default_style
-        if @queued_for_write[style]
-          @queued_for_write[style]
-        else
-          retry_on_broken_socket do
-            StringIO.new(mogilefs.get_file_data(url(style)))
-          end
+        return @queued_for_write[style] if @queued_for_write[style]
+        file = Tempfile.new(path(style))
+        retry_on_broken_socket do
+          file.write(mogilefs.get_file_data(url(style)))
         end
+        file.rewind
+        return file
       end
       alias_method :to_io, :to_file
 
