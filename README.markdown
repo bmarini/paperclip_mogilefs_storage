@@ -38,6 +38,15 @@ Usage
           - 12.34.56.78:6001
       class: "myclass"
 
+3) Add the controller for serving the files from mogilefs and the route to such
+
+cp vendor/plugins/paperclip_mogilefs_storage/app/controller/mogile_controller.rb app/controller/mogile_controller.rb
+
+in config/routes.rb
+
+map.mogile '/system/*path', :controller => 'mogile', :action => 'show'
+
+
 3) Profit! :)
 
 You can also use MogileFS only for certain attachments. In this case you should
