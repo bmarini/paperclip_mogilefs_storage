@@ -40,14 +40,14 @@ Usage
 
 3) Add the controller for serving the files from mogilefs and the route to such
 
-cp vendor/plugins/paperclip_mogilefs_storage/app/controller/mogile_controller.rb app/controller/mogile_controller.rb
+		cp vendor/plugins/paperclip_mogilefs_storage/app/controller/mogile_controller.rb app/controller/mogile_controller.rb
 
 in config/routes.rb
 
-map.mogile '/system/*path', :controller => 'mogile', :action => 'show'
+		map.mogile '/system/*path', :controller => 'mogile', :action => 'show'
 
 
-3) Profit! :)
+4) Profit! :)
 
 You can also use MogileFS only for certain attachments. In this case you should
 define storage directly in your model, not in the environment.rb file. MogileFS class
