@@ -1,23 +1,22 @@
+# Example MogileFS configuration.
+
 development:
   connection:
-    domain: "development.visabusinessnetwork.com"
+    domain: "development.someapplication.com"
     hosts:
       - 72.2.120.107:7001
-      - 8.17.84.194:7001
   class: "file"
 
 staging:
   connection:
-    domain: "staging.visabusinessnetwork.com"
+    domain: "staging.someapplication.com"
     hosts:
       - 72.2.120.107:7001
-      - 8.17.84.194:7001
   class: "file"
 
 production:
   connection:
-    domain: "production.visabusinessnetwork.com"
+    domain: "production.someapplication.com"
     hosts:
       - 72.2.120.107:7001
-      - 8.17.84.194:7001
   class: "file"
