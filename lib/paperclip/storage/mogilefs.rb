@@ -21,14 +21,14 @@ module Paperclip
       end
 
       def exists?(style = default_style)
-        mogilefs_key_exist?(url(style))
+        mogilefs_key_exist?(url(style, false))
       end
 
       def to_file style = default_style
         return @queued_for_write[style] if @queued_for_write[style]
         file = Tempfile.new(path(style))
         retry_on_broken_socket do
-          file.write(mogilefs.get_file_data(url(style)))
+          file.write(mogilefs.get_file_data(url(style, false)))
         end
         file.rewind
         return file
@@ -37,14 +37,14 @@ module Paperclip
 
       def flush_writes #:nodoc:
         @queued_for_write.each do |style, io|
-          Paperclip.log("Saving #{url(style)} to MogileFS")
+          Paperclip.log("Saving #{url(style, false)} to MogileFS")
 
           begin
             retry_on_broken_socket do
               begin
                 io.open if io.closed? # Reopen IO to avoid empty_file error
 
-                mogilefs.store_file(url(style), mogilefs_class, io)
+                mogilefs.store_file(url(style, false), mogilefs_class, io)
               ensure
                 io.close
               end
@@ -72,7 +72,7 @@ module Paperclip
       end
 
       # Don't include timestamp by default
-      def url(style = default_style, include_updated_timestamp = false)
+      def url(style = default_style, include_updated_timestamp = true)
         super(style, include_updated_timestamp)
       end
 
@@ -80,7 +80,7 @@ module Paperclip
       def queue_existing_for_delete #:nodoc:
         return unless file?
         @queued_for_delete += [:original, *@styles.keys].uniq.map do |style|
-          url(style) if exists?(style)
+          url(style, false) if exists?(style)
         end.compact
         instance_write(:file_name, nil)
         instance_write(:content_type, nil)
