@@ -26,10 +26,16 @@ module Paperclip
 
       def to_file style = default_style
         return @queued_for_write[style] if @queued_for_write[style]
-        file = Tempfile.new(path(style))
+
+        filename = path(style)
+        extname  = File.extname(filename)
+        basename = File.basename(filename, extname)
+        file     = Tempfile.new([basename, extname])
+
         retry_on_broken_socket do
           file.write(mogilefs.get_file_data(url(style, false)))
         end
+
         file.rewind
         return file
       end
